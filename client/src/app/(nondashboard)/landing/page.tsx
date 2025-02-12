@@ -9,6 +9,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { useGetCoursesQuery } from "@/state/api";
 import CourseCardSearch from "@/components/CourseCardSearch";
 import { useRouter } from "next/navigation";
+import { useUser } from "@clerk/nextjs";
 
 const LoadingSkeleton = () => {
   return (
@@ -41,6 +42,8 @@ const LoadingSkeleton = () => {
 };
 
 const Landing = () => {
+  const { user } = useUser();
+  console.log(user);
   const router = useRouter();
   const handleCourseClick = (courseId: string) => {
     router.push(`/search?id=${courseId}`, {});
@@ -51,7 +54,6 @@ const Landing = () => {
   if (isLoading) {
     return <LoadingSkeleton />;
   }
-  console.log("courses", courses);
   return (
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.5 }} className="landing">
       <motion.div
@@ -75,7 +77,6 @@ const Landing = () => {
         </div>
         <div className="landing__hero-images">
           {["/hero1.jpg", "/hero2.jpg", "/hero3.jpg"].map((src, index) => {
-            console.log(src);
             return (
               <Image
                 src={src}
