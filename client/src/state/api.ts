@@ -1,5 +1,6 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { BaseQueryApi, FetchArgs } from "@reduxjs/toolkit/query";
+import { User } from "@clerk/nextjs/server";
 const customBaseQuery = async (args: string | FetchArgs, api: BaseQueryApi, extraOptions: any) => {
   const baseQuery = fetchBaseQuery({
     baseUrl: process.env.NEXT_PUBLIC_API_BASE_URL,
@@ -20,11 +21,19 @@ const customBaseQuery = async (args: string | FetchArgs, api: BaseQueryApi, extr
 export const api = createApi({
   baseQuery: customBaseQuery,
   reducerPath: "api",
-  tagTypes: ["Courses"],
+  tagTypes: ["Courses" , "Users"],
   endpoints: (build) => ({
+    updateUser: build.mutation<User, Partial<User> & { userId: string }>({
+      query: ({ userId, ...updatedUser }) => ({
+        url: `users/clerk/${userId}`,
+        method: "PUT",
+        body: updatedUser,
+      }),
+      invalidatesTags: ["Users"],
+    }),
     getCourses: build.query<Course[], { category?: string }>({
       query: ({ category }) => ({
-        url: "course",
+        url: "courses",
         // localhost:8001/courses
         params: { category },
       }),
@@ -41,4 +50,4 @@ export const api = createApi({
   }),
 });
 
-export const { useGetCoursesQuery, useGetCourseQuery } = api;
+export const { useGetCoursesQuery, useGetCourseQuery, useUpdateUserMutation } = api;
