@@ -8,6 +8,8 @@ import * as dynamoose from "dynamoose";
 
 // ROUTE IMPORTS
 import courseRoutes from "./routes/courseRoutes";
+import { createClerkClient } from "@clerk/express";
+import userClerkRoutes from "./routes/userClerkRoutes";
 
 // Configurations
 dotenv.config();
@@ -15,6 +17,11 @@ const isProduction = process.env.NODE_ENV === "production";
 if (!isProduction) {
   dynamoose.aws.ddb.local();
 }
+
+export const clerkClient = createClerkClient({
+  secretKey: process.env.CLERK_SECRET_KEY,
+});
+// user routes
 
 const app = express();
 
@@ -36,7 +43,8 @@ app.get("/", (req, res) => {
   });
 });
 
-app.use("/course", courseRoutes);
+app.use("/courses", courseRoutes);
+app.use("/users/clerk", userClerkRoutes);
 
 // Server
 const port = process.env.PORT || 3000;

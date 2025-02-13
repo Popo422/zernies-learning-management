@@ -36,6 +36,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.clerkClient = void 0;
 const express_1 = __importDefault(require("express"));
 const dotenv_1 = __importDefault(require("dotenv"));
 const body_parser_1 = __importDefault(require("body-parser"));
@@ -45,12 +46,18 @@ const morgan_1 = __importDefault(require("morgan"));
 const dynamoose = __importStar(require("dynamoose"));
 // ROUTE IMPORTS
 const courseRoutes_1 = __importDefault(require("./routes/courseRoutes"));
+const express_2 = require("@clerk/express");
+const userClerkRoutes_1 = __importDefault(require("./routes/userClerkRoutes"));
 // Configurations
 dotenv_1.default.config();
 const isProduction = process.env.NODE_ENV === "production";
 if (!isProduction) {
     dynamoose.aws.ddb.local();
 }
+exports.clerkClient = (0, express_2.createClerkClient)({
+    secretKey: process.env.CLERK_SECRET_KEY,
+});
+// user routes
 const app = (0, express_1.default)();
 // Middleware
 app.use(express_1.default.json());
@@ -67,7 +74,8 @@ app.get("/", (req, res) => {
         message: "Hello, world!",
     });
 });
-app.use("/course", courseRoutes_1.default);
+app.use("/courses", courseRoutes_1.default);
+app.use("/users/clerk", userClerkRoutes_1.default);
 // Server
 const port = process.env.PORT || 3000;
 if (!isProduction) {
