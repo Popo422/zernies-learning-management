@@ -43,10 +43,7 @@ const Search = () => {
     });
   };
 
- 
-
   return (
-    <Suspense fallback={<Loading />}>
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.5 }} className="search ">
       <h1 className="search__title">List of available courses</h1>
       <h2 className="search__subtitle">{courses.length} courses avaiable</h2>
@@ -79,7 +76,6 @@ const Search = () => {
         )}
       </div>
     </motion.div>
-    </Suspense>
   );
 };
 

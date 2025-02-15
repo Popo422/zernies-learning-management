@@ -30,7 +30,7 @@ const PaymentPageContent = () => {
       toast.error("Stripe service is not available");
       return;
     }
-    const baseUrl = process.env.NEXT_PUBLIC_STRIPE_REDIRECT_URL
+    const baseUrl = process.env.NEXT_PUBLIC_STRIPE_REDIRECT_URL;
     console.log(baseUrl, "baseURL");
     const result = await stripe.confirmPayment({
       elements,
@@ -109,11 +109,9 @@ const PaymentPageContent = () => {
 
 const PaymentPage = () => {
   return (
-    <Suspense fallback={<Loading />}>
-      <StripeProvider>
-        <PaymentPageContent />
-      </StripeProvider>
-    </Suspense>
+    <StripeProvider>
+      <PaymentPageContent />
+    </StripeProvider>
   );
 };
 

@@ -26,12 +26,10 @@ const Page = () => {
     }
   };
   return (
-    <Suspense fallback={<Loading />}>
-      <div className="checkout">
-        <WizardStepper currentStep={checkoutStep} />
-        {/* <div className="checkout__content">{renderStep()}</div> */}
-      </div>
-    </Suspense>
+    <div className="checkout">
+      <WizardStepper currentStep={checkoutStep} />
+      {/* <div className="checkout__content">{renderStep()}</div> */}
+    </div>
   );
 };
 
