@@ -1,3 +1,5 @@
+import { Clerk } from "@clerk/clerk-js";
+
 declare global {
   interface PaymentMethod {
     methodId: string;
@@ -205,6 +207,10 @@ declare global {
     courseCategory: string;
     coursePrice: string;
     courseStatus: boolean;
+  }
+
+  interface Window {
+    Clerk: typeof Clerk;
   }
 }
 
