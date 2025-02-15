@@ -8,7 +8,7 @@ import CheckoutDetailsPage from "./details";
 import PaymentPage from "./payment";
 import CompletionPage from "./completion";
 import { Suspense } from "react";
-const CheckoutWizard = () => {
+const Page = () => {
   const { isLoaded } = useUser();
   const { checkoutStep } = useCheckoutNavigation();
   if (!isLoaded) return <Loading />;
@@ -35,4 +35,4 @@ const CheckoutWizard = () => {
   );
 };
 
-export default CheckoutWizard;
+export default Page;
