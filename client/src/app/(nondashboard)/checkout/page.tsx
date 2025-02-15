@@ -28,7 +28,7 @@ const Page = () => {
   return (
     <div className="checkout">
       <WizardStepper currentStep={checkoutStep} />
-      {/* <div className="checkout__content">{renderStep()}</div> */}
+      <div className="checkout__content">{renderStep()}</div>
     </div>
   );
 };
