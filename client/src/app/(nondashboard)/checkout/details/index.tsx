@@ -47,7 +47,7 @@ const CheckoutDetailsPage = () => {
             </p>
             <Form {...methods}>
               <form
-                onSubmit={methods.handleSubmit((data) => {
+                onSubmit={methods.handleSubmit((data: any) => {
                   console.log(data);
                 })}
                 className="checkout-details__form"
