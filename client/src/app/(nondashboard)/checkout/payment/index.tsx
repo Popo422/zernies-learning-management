@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { Suspense } from "react";
 import StripeProvider from "./StripeProvider";
 import { PaymentElement, useElements, useStripe } from "@stripe/react-stripe-js";
 import { useCreateStripePaymentIntentMutation } from "@/state/api";
@@ -12,6 +12,7 @@ import CoursePreview from "@/components/CoursePreview";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { CreditCard } from "lucide-react";
+import Loading from "@/components/Loading";
 
 const PaymentPageContent = () => {
   const stripe = useStripe();
@@ -113,9 +114,11 @@ const PaymentPageContent = () => {
 
 const PaymentPage = () => {
   return (
-    <StripeProvider>
-      <PaymentPageContent />;
-    </StripeProvider>
+    <Suspense fallback={<Loading />}>
+      <StripeProvider>
+        <PaymentPageContent />;
+      </StripeProvider>
+    </Suspense>
   );
 };
 

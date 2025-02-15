@@ -1,3 +1,4 @@
+"use client";
 import NonDashboardNavbar from "@/components/NonDashboardNavbar";
 import Footer from "@/components/Footer";
 
