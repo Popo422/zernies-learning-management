@@ -8,8 +8,9 @@ import * as dynamoose from "dynamoose";
 
 // ROUTE IMPORTS
 import courseRoutes from "./routes/courseRoutes";
-import { createClerkClient } from "@clerk/express";
+import { clerkMiddleware, createClerkClient, requireAuth } from "@clerk/express";
 import userClerkRoutes from "./routes/userClerkRoutes";
+import transactionRoutes from "./routes/transactionRoutes";
 
 // Configurations
 dotenv.config();
@@ -33,6 +34,7 @@ app.use(helmet.crossOriginResourcePolicy({ policy: "cross-origin" }));
 app.use(morgan("common"));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
+app.use(clerkMiddleware());
 
 // Routes
 // app.use("/api", require("./routes"));
@@ -44,7 +46,8 @@ app.get("/", (req, res) => {
 });
 
 app.use("/courses", courseRoutes);
-app.use("/users/clerk", userClerkRoutes);
+app.use("/users/clerk", requireAuth(), userClerkRoutes);
+app.use("/transactions",requireAuth(), transactionRoutes)
 
 // Server
 const port = process.env.PORT || 3000;

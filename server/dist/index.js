@@ -48,6 +48,7 @@ const dynamoose = __importStar(require("dynamoose"));
 const courseRoutes_1 = __importDefault(require("./routes/courseRoutes"));
 const express_2 = require("@clerk/express");
 const userClerkRoutes_1 = __importDefault(require("./routes/userClerkRoutes"));
+const transactionRoutes_1 = __importDefault(require("./routes/transactionRoutes"));
 // Configurations
 dotenv_1.default.config();
 const isProduction = process.env.NODE_ENV === "production";
@@ -67,6 +68,7 @@ app.use(helmet_1.default.crossOriginResourcePolicy({ policy: "cross-origin" }));
 app.use((0, morgan_1.default)("common"));
 app.use(body_parser_1.default.json());
 app.use(body_parser_1.default.urlencoded({ extended: false }));
+app.use((0, express_2.clerkMiddleware)());
 // Routes
 // app.use("/api", require("./routes"));
 app.get("/", (req, res) => {
@@ -75,7 +77,8 @@ app.get("/", (req, res) => {
     });
 });
 app.use("/courses", courseRoutes_1.default);
-app.use("/users/clerk", userClerkRoutes_1.default);
+app.use("/users/clerk", (0, express_2.requireAuth)(), userClerkRoutes_1.default);
+app.use("/transactions", (0, express_2.requireAuth)(), transactionRoutes_1.default);
 // Server
 const port = process.env.PORT || 3000;
 if (!isProduction) {
