@@ -1,3 +1,5 @@
+"use client";
+
 import React from "react";
 import StripeProvider from "./StripeProvider";
 import { PaymentElement, useElements, useStripe } from "@stripe/react-stripe-js";
