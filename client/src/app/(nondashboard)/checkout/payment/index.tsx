@@ -111,7 +111,7 @@ const PaymentPage = () => {
   return (
     <Suspense fallback={<Loading />}>
       <StripeProvider>
-        <PaymentPageContent />;
+        <PaymentPageContent />
       </StripeProvider>
     </Suspense>
   );

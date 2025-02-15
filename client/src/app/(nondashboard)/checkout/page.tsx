@@ -29,7 +29,7 @@ const CheckoutWizard = () => {
     <Suspense fallback={<Loading />}>
       <div className="checkout">
         <WizardStepper currentStep={checkoutStep} />
-        <div className="checkout__content">{renderStep()}</div>
+        {/* <div className="checkout__content">{renderStep()}</div> */}
       </div>
     </Suspense>
   );
