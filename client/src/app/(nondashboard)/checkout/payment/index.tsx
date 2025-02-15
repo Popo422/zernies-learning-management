@@ -3,7 +3,7 @@
 import React, { Suspense } from "react";
 import StripeProvider from "./StripeProvider";
 import { PaymentElement, useElements, useStripe } from "@stripe/react-stripe-js";
-import { useCreateStripePaymentIntentMutation } from "@/state/api";
+import { useCreateStripePaymentIntentMutation, useCreateTransactionMutation } from "@/state/api";
 import { useCheckoutNavigation } from "@/hooks/useCheckoutNavigation";
 import { useCurrentCourse } from "@/hooks/useCurrentCourse";
 import { useClerk, useUser } from "@clerk/nextjs";
@@ -22,7 +22,7 @@ const PaymentPageContent = () => {
   const { course, courseId } = useCurrentCourse();
   const { user } = useUser();
   const { signOut } = useClerk();
-
+  const [createTransaction] = useCreateTransactionMutation();
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -30,17 +30,12 @@ const PaymentPageContent = () => {
       toast.error("Stripe service is not available");
       return;
     }
-
-    const baseUrl = process.env.NEXT_PUBLIC_LOCAL_URL
-      ? `http://${process.env.NEXT_PUBLIC_LOCAL_URL}`
-      : process.env.NEXT_PUBLIC_VERCEL_URL
-      ? `https://${process.env.NEXT_PUBLIC_VERCEL_URL}`
-      : undefined;
-
+    const baseUrl = process.env.NEXT_PUBLIC_STRIPE_REDIRECT_URL
+    console.log(baseUrl, "baseURL");
     const result = await stripe.confirmPayment({
       elements,
       confirmParams: {
-        return_url: `${baseUrl}/checkout?step=3&id=${courseId}`,
+        return_url: `${baseUrl}?id=${courseId}`,
       },
       redirect: "if_required",
     });
@@ -53,8 +48,8 @@ const PaymentPageContent = () => {
         paymentProvider: "stripe",
         amount: course?.price || 0,
       };
-
-      // await createTransaction(transactionData), navigateToStep(3);
+      await createTransaction(transactionData);
+      navigateToStep(3);
     }
   };
 

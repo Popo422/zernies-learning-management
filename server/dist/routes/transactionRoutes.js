@@ -7,4 +7,5 @@ const express_1 = __importDefault(require("express"));
 const transactionController_1 = require("../controller/transactionController");
 const router = express_1.default.Router();
 router.post("/stripe/payment-intent", transactionController_1.createStripePaymentIntent);
+router.post("/", transactionController_1.createTransaction);
 exports.default = router;
